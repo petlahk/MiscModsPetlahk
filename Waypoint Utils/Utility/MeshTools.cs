@@ -62,29 +62,19 @@ namespace VSHUD
                     }
                 }
             });
-
+            
             api.RegisterCommand("objworld", "", "", (p, a) =>
             {
-                MeshData mesh = new MeshData(1, 1);
-                BlockPos playerPos = api.World.Player.Entity.Pos.AsBlockPos;
-                int rad = (int)a.PopInt(16);
-                int yrad = (int)a.PopInt(16);
-                ShapeTesselatorManager tesselatormanager = api.TesselatorManager as ShapeTesselatorManager;
-
-                api.World.BlockAccessor.WalkBlocks(playerPos.AddCopy(rad, yrad, rad), playerPos.AddCopy(-rad, -yrad, -rad), (block, bpos) =>
+                _hLaepLRCOckdCEvZTPp1GxfgrdT ClientMain = (api.World as _hLaepLRCOckdCEvZTPp1GxfgrdT);
+                var TerrainChunkTesselator = ClientMain.GetField("_SgdDObpP2rwRv6hFT4kvaPwUqWu") as ChunkTesselator;
+                var ChunkMeshDatas = TerrainChunkTesselator.GetField("chunkModeldataByRenderPass") as MeshData[][];
+                int i = 0;
+                foreach (var val in ChunkMeshDatas)
                 {
-                    if (block.Id != 0 && api.World.BlockAccessor.GetLightLevel(bpos, EnumLightLevelType.MaxLight) > 0)
-                    {
-                        MeshData thismesh = tesselatormanager.blockModelDatasLod0.ContainsKey(block.Id) ?
-                        tesselatormanager.blockModelDatasLod0[block.Id].Clone() : block.MeshInPos(bpos, api);
-
-                        Vec3f translation = new Vec3f(-(playerPos.X - bpos.X), -(playerPos.Y - bpos.Y), -(playerPos.Z - bpos.Z));
-
-                        thismesh.Translate(translation);
-                        mesh.AddMeshData(thismesh);
-                    }
-                });
-                ConvertToObj(mesh, "world", false, true);
+                    MeshData mesh = val[0];
+                    ConvertToObj(mesh, "worldexport_" + (EnumChunkRenderPass)i, false, true);
+                    i++;
+                }
             });
 
         }

@@ -25,5 +25,9 @@ namespace CustomMeshMod
 
         public Vec3f Rot { get => new Vec3f(RotateX, RotateY, RotateZ); }
         public Vec3f Scale { get => new Vec3f(ScaleX, ScaleY, ScaleZ); }
+
+        public TextureAtlasPosition TexPos { get; set; }
+        public TextureAtlasPosition NormalPos { get; set; }
+        public TextureAtlasPosition PbrPos { get; set; }
     }
 }

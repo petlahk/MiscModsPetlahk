@@ -224,14 +224,6 @@ namespace VSHUD
             return stacks1.ToArray();
         }
 
-        public static object GetInstanceField(Type type, object instance, string fieldName)
-        {
-            BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                | BindingFlags.Static;
-            FieldInfo field = type.GetField(fieldName, bindFlags);
-            return field.GetValue(instance);
-        }
-
         public static List<AssetLocation> GetMatches(this AssetLocation code, ICoreAPI Api)
         {
             List<AssetLocation> assets = new List<AssetLocation>();
@@ -396,5 +388,27 @@ namespace VSHUD
 
         //public static void UnregisterDialog(this IClientWorldAccessor world, GuiDialog dialog) => (world as _GNOiZepshQPekcjnYBEc2hMXvRC)._SZsnwRyJl33k1uUAageExrQjmEA(dialog);
         //public static void RegisterDialog(this IClientWorldAccessor world, params GuiDialog[] dialogs) => (world as _GNOiZepshQPekcjnYBEc2hMXvRC)._HxNwYrndQ0qY1vijJMv1xhBL05g(dialogs);
+
+        public static object GetField<T>(this T instance, string fieldName)
+        {
+            return GetInstanceField(instance.GetType(), instance, fieldName);
+        }
+
+        public static object CallMethod<T>(this T instance, string methodName) => instance?.CallMethod(methodName, null);
+
+        public static object CallMethod<T>(this T instance, string methodName, params object[] parameters)
+        {
+            BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+            MethodInfo info = instance?.GetType()?.GetMethod(methodName, bindFlags);
+            return info?.Invoke(instance, parameters);
+        }
+
+        public static object GetInstanceField(Type type, object instance, string fieldName)
+        {
+            BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                | BindingFlags.Static;
+            FieldInfo field = type.GetField(fieldName, bindFlags);
+            return field.GetValue(instance);
+        }
     }
 }

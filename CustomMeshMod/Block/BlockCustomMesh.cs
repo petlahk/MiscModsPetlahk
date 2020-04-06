@@ -28,6 +28,19 @@ namespace CustomMeshMod
                     mesh.WithTexPos((api as ICoreClientAPI).BlockTextureAtlas[customMesh.Texture.Base]) : 
                     mesh.WithTexPos(customModels.customMeshTextures[customMesh.FullPath]);
                 meshRef = (api as ICoreClientAPI).Render.UploadMesh(mesh);
+
+                if (customModels.customMeshTextures.TryGetValue(customMesh.FullPath, out TextureAtlasPosition tPos))
+                {
+                    customMesh.TexPos = tPos;
+                }
+                if (customModels.customNormalTextures.TryGetValue(customMesh.FullPath, out tPos))
+                {
+                    customMesh.NormalPos = tPos;
+                }
+                if (customModels.customMeshPBRs.TryGetValue(customMesh.FullPath, out tPos))
+                {
+                    customMesh.PbrPos = tPos;
+                }
             }
         }
 

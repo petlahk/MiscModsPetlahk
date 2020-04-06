@@ -18,11 +18,11 @@ namespace CustomMeshMod
         public override void Initialize(ICoreAPI api, JsonObject properties)
         {
             base.Initialize(api, properties);
-            var c = blockCustomMesh.customMesh;
             capi = api as ICoreClientAPI;
 
-            if (capi != null) myRenderer = new MeshRenderer(capi, Blockentity.Pos, c, blockCustomMesh.meshRef);
-            capi?.Event.RegisterRenderer(myRenderer, EnumRenderStage.Opaque);
+            //if (capi != null) myRenderer = new MeshRenderer(capi, Blockentity.Pos, c, blockCustomMesh.meshRef);
+            //capi?.Event.RegisterRenderer(myRenderer, EnumRenderStage.Opaque);
+            capi?.ModLoader.GetModSystem<InstancedMeshRenderer>().AddMesh(Blockentity.Pos, blockCustomMesh);
         }
 
         public override void OnBlockRemoved()
@@ -34,7 +34,6 @@ namespace CustomMeshMod
         public override void OnBlockUnloaded()
         {
             base.OnBlockUnloaded();
-            capi?.Event.UnregisterRenderer(myRenderer, EnumRenderStage.Opaque);
         }
     }
 }
